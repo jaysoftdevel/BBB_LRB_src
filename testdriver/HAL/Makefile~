@@ -1,0 +1,4 @@
+COMPILE=gcc
+INCLUDE=
+
+$(COMPILER) -o test test.c $(INCLUDES)
