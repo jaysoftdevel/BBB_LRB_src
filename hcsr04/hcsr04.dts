@@ -1,0 +1,80 @@
+/dts-v1/;
+/plugin/;
+/ {
+  compatible = "ti,beaglebone", "ti,beaglebone-black";
+
+  /* identification */
+  part-number = "hcsr04";
+  version = "00A0";
+
+  exclusive-use =
+"P8.46","gpio2_7",
+"P8.41","gpio2_10",
+"P8.45","gpio2_6",
+"P8.40","gpio2_13",
+"P8.44","gpio2_9",
+"P8.39","gpio2_12";
+
+
+  fragment@10 {
+target = <&am33xx_pinmux>;
+__overlay__ {
+pinctrl_hcsr04: pinctrl_hcsr04_pins {
+pinctrl-single,pins = <
+					/*
+						Table of mux options:
+						Bit 0 \
+						Bit 1 |- Mode
+						Bit 2 /
+						Bit 3: 1 - Pull disabled, 0 - Pull enabled
+						
+						Bit 4: 1 - Pull up, 0 - Pull down
+						Bit 5: 1 - Input, 0 – Output
+					*/
+					
+					// these pins cause the eth0 not to work any more, don't know why
+					/* FL */
+					0x128 0x07 /* Trigger: P8_41 gpio2[10] GPIO74 out pulldown Mode: 7 */
+					0x11C 0x27 /* Echo: P8_46 gpio2[7] GPIO71 in pulldown Mode: 7 */
+					
+					/* FC */
+					0x134 0x07 /* Trigger: P8_40 gpio2[13] GPIO77 out pulldown Mode: 7 */
+					0x118 0x27 /* Echo: P8_45 gpio2[6] GPIO70 in pulldown Mode: 7 */
+					
+					/* FR */
+                    0x130 0x07 /* Trigger: P8_39 gpio2[12] GPIO76 out pulldown Mode: 7 */
+                    0x124 0x27 /* Echo: P8_44 gpio2[9] GPIO73 in pulldown Mode: 7 */
+                    
+                    /* RL */
+                    0x13C 0x07 /* Trigger: P8_38 gpio2[15] GPIO79 out pulldown Mode: 7 */
+                    0x120 0x27 /* Echo: P8_43 gpio2[8] GPIO72 in pulldown Mode: 7 */
+                    
+                    /* RR */
+                    0x138 0x07 /* Trigger: P8_37 gpio2[14] GPIO78 out pulldown Mode: 7 */
+                    0x12C 0x27 /* Echo: P8_37 gpio2[11] GPIO75 in pulldown Mode: 7 */
+                    
+  
+  >;
+  };
+};
+  };
+
+  fragment@11 {
+target = <&ocp>;
+__overlay__ {
+  hcsr04_FL {
+compatible = "bone-pinmux-helper","gpio","pruss";
+pinctrl-names = "default";
+pinctrl-0 = <&pinctrl_hcsr04>;
+status = "okay";
+  };
+};
+  };
+
+  fragment@12{
+  target = <&pruss>;
+__overlay__ {
+  status = "okay";
+};
+  };
+};
