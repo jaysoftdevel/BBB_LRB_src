@@ -122,9 +122,6 @@ int iolib_setdir(char port, char pin, char dir) {
 		for (i = 0; i < 4; i++) {
 			printf("mmap region %d address is 0x%08x\n", i, gpio_addr[i]);
 		}
-#endif
-	}
-#ifdef IOLIB_DBG
 		printf("iolib_setdir: bank is %d\n", bank[port - 8][pin - 1]);
 #endif
 	reg = (void*) gpio_addr[bank[port - 8][pin - 1]] + GPIO_OE;
