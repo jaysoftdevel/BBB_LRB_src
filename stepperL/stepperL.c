@@ -185,8 +185,8 @@ int initStepperLGpio() {
 	return (0);
 }
 
-//int deinitStepperLGpio() {
-//	iolib_free();
-//	return (0);
-//}
+int deinitStepperLGpio() {
+	iolib_free();
+	return (0);
+}
 

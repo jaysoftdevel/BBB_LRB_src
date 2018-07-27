@@ -3,15 +3,15 @@ CFLAGS = -Wall -DTESTSTEPPER -DDEBUG
 
 all: stepperL
 
-libiofunc.a: ../GPIO/iofunc/iolib.c
-	@echo ">> Creating GPIO lib"
-	make -C ../GPIO/iofunc/ clean
-	make -C ../GPIO/iofunc/ lib
+#libiofunc.a: ../gpio/iofunc/iolib.c
+#	@echo ">> Creating gpio lib"
+#	make -C ../gpio/iofunc/ clean
+#	make -C ../gpio/iofunc/ lib
 
-stepperL: stepperL.c libiofunc.a
-	@echo ">> Compiling StepperMotor_Control sample"
-	$(CC) $(CFLAGS) -c -o stepperL.o stepperL.c -I../GPIO/iofunc
-	$(CC) -o stepperL stepperL.o -L../GPIO/iofunc -liofunc
+stepperL: stepperL.c
+	@echo ">> Compiling stepperL binary"
+	$(CC) $(CFLAGS) -c -o stepperL.o stepperL.c -I../gpio/iofunc
+	$(CC) -o stepperL stepperL.o -L../gpio/iofunc -liofunc
 
 clean:
 	rm -r stepperL.o stepperL
