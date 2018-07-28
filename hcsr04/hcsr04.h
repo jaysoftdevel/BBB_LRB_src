@@ -8,8 +8,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include <prussdrv.h>
-#include <pruss_intc_mapping.h>
+#include "prussdrv.h"
+#include "pruss_intc_mapping.h"
 
 #include <time.h>
 #include <fcntl.h>

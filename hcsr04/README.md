@@ -5,14 +5,19 @@ Beaglebone Black PRU code to use HC-SR04 proximity sensor.
 There are many examples around with Beaglebone PRU code to use an HC-SR04 sonar sensor, but most are outdated, do not work or require older beagles or older kernels. 
 This repository includes everything needed to obtain a working example and can be used as a template for more complex PRU code.
 
-Prerequisites:
+### Work with pasm PRU compiler
+	- pasm is provided by https://github.com/beagleboard/am335x_pru_package
+	- a prebuild binary is located in pru_sw/utils/ folder
+	- copy the pasm binary to /usr/bin on your host/build machine
+
+### Prerequisites:
 
 	* Beaglebone Black with debian 3.8.13 bone47
 	* HC-SR04 sensor
 	* Dev tools (gcc, pasm, dtc, etc.) that are already included in BBB latest images.
 	  (If you miss them, please upgrade from http://beagleboard.org/latest-images/)
 
-Hardware configuration:
+### Hardware configuration:
 
 	* TRIGGER		P8_45 gpio2[6] GPIO70	out	pulldown		Mode: 7 
 	* ECHO			P8_46 gpio2[7] GPIO71	in	pulldown		Mode: 7 *** with R 1KOhm
