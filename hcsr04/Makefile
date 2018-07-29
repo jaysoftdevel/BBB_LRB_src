@@ -1,7 +1,9 @@
 CC = gcc
 CFLAGS = -Wall -DTESTHCSR04
-PRU_ASM = pasm
+PRU_ASM=pasm
 DTC = dtc
+IPASM_PATH=$(PASM_PATH)# import from rootbot-hcsr04 recipe
+
 
 all: hcsr04_FL.bin hcsr04_FC.bin hcsr04_FR.bin hcsr04_RL.bin hcsr04_RR.bin hcsr04
 
@@ -11,23 +13,23 @@ all: hcsr04_FL.bin hcsr04_FC.bin hcsr04_FR.bin hcsr04_RL.bin hcsr04_RR.bin hcsr0
 
 hcsr04_FL.bin: hcsr04_FL.p
 	@echo ">> Generating PRU binary FL"
-	$(PRU_ASM) -b hcsr04_FL.p
+	$(IPASM_PATH)/$(PRU_ASM) -b hcsr04_FL.p
 
 hcsr04_FC.bin: hcsr04_FC.p
 	@echo ">> Generating PRU binary FC"
-	$(PRU_ASM) -b hcsr04_FC.p
+	$(IPASM_PATH)/$(PRU_ASM) -b hcsr04_FC.p
 	
 hcsr04_FR.bin: hcsr04_FR.p
 	@echo ">> Generating PRU binary FR"
-	$(PRU_ASM) -b hcsr04_FR.p
+	$(IPASM_PATH)/$(PRU_ASM) -b hcsr04_FR.p
 	
 hcsr04_RL.bin: hcsr04_RL.p
 	@echo ">> Generating PRU binary RL"
-	$(PRU_ASM) -b hcsr04_RL.p
+	$(IPASM_PATH)/$(PRU_ASM) -b hcsr04_RL.p
 	
 hcsr04_RR.bin: hcsr04_RR.p
 	@echo ">> Generating PRU binary RR"
-	$(PRU_ASM) -b hcsr04_RR.p
+	$(IPASM_PATH)/$(PRU_ASM) -b hcsr04_RR.p
 
 #libiofunc.a: ../GPIO/iofunc/iolib.c
 #	@echo ">> Creating GPIO lib"
@@ -37,7 +39,7 @@ hcsr04_RR.bin: hcsr04_RR.p
 hcsr04: hcsr04.c
 	@echo ">> Compiling HC-SR04 binary"
 	$(CC) $(CFLAGS) -c -o hcsr04.o hcsr04.c -I../gpio/iofunc
-	$(CC) -lpthread -o hcsr04 hcsr04.o -L../gpio/iofunc -liofunc -lprussdrv
+	$(CC) -lpthread -o hcsr04 hcsr04.o -lprussdrvd -L. -L../gpio/iofunc -liofunc
 
 clean:
 	rm -rf hcsr04 hcsr04.o hcsr04_FL.bin hcsr04_FC.bin hcsr04_FR.bin hcsr04_RL.bin hcsr04_RR.bin
