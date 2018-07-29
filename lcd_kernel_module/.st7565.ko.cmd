@@ -1,1 +1,0 @@
-cmd_/home/debian/projects/my_st7565-linux-master/st7565.ko := ld -EL -r  -T /usr/src/linux-headers-3.14.22-ti-r31/scripts/module-common.lds --build-id  -o /home/debian/projects/my_st7565-linux-master/st7565.ko /home/debian/projects/my_st7565-linux-master/st7565.o /home/debian/projects/my_st7565-linux-master/st7565.mod.o
