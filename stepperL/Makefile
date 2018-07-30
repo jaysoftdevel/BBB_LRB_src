@@ -1,4 +1,4 @@
-CC = gcc
+#CC = arm-linux-gnueabi-gcc
 CFLAGS = -Wall -DTESTSTEPPER -DDEBUG
 
 all: stepperL

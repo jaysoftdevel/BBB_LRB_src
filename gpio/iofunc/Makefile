@@ -18,7 +18,7 @@ OBJECTS = $(SOURCES:%.c=%.o)
 
 EXTRA_DEFINE = 
 CCCFLAGS = $(EXTRA_DEFINE) 
-CC = gcc
+#CC = arm-linux-gnueabi-gcc
 CFLAGS = $(EXTRA_DEFINE)
 
 all : libiofunc.a $(test)
