@@ -1,4 +1,4 @@
-CC = gcc
+#CC = arm-linux-gnueabi-gcc
 CFLAGS = -Wall -DTESTHCSR04
 PRU_ASM=pasm
 DTC = dtc

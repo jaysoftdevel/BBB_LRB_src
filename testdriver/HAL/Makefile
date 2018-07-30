@@ -1,4 +1,4 @@
-CC=gcc
+#CC=gcc
 STEPPER_R_PATH=../../stepperR
 STEPPER_L_PATH=../../stepperL
 HCSR_PATH=../../hcsr04
