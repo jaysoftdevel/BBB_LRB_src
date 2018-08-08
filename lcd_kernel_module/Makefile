@@ -1,17 +1,18 @@
 obj-m += st7565.o
 
-all: 
-	make -C /usr/src/linux-headers-${shell uname -r}/ SUBDIRS=${shell pwd} modules
-#	#make -C /usr/src/linux-${shell uname -r}/ SUBDIRS=${shell pwd} modules
+SRC := $(shell pwd)
 
+all:
+	$(MAKE) -C $(KERNEL_SRC) M=$(SRC) modules
+
+modules_install:
+	$(MAKE) -C $(KERNEL_SRC) M=$(SRC) modules_install
 clean:
-	make -C /usr/src/linux-headers-${shell uname -r}/ SUBDIRS=${shell pwd} clean
-	#make -C /usr/src/linux-${shell uname -r}/ SUBDIRS=${shell pwd} clean
+	make -C $(KERNEL_SRC) M=$(SRC) clean
 
-#SRC := $(shell pwd)
+# use this for local build on BBB using debian
+#all: 
+#	make -C /usr/src/linux-headers-${shell uname -r}/ SUBDIRS=${shell pwd} modules
 
-#all:
-#	$(MAKE) -C $(KERNEL_SRC) M=$(SRC) modules
-
-#modules_install:
-	#$(MAKE) -C $(KERNEL_SRC) M=$(SRC) modules_install
+#clean:
+#	make -C /usr/src/linux-headers-${shell uname -r}/ SUBDIRS=${shell pwd} clean
