@@ -296,60 +296,64 @@ static struct file_operations pugs_fops = { .owner = THIS_MODULE, .open =
 		.unlocked_ioctl = lcd_control, .write = st7565_write };
 
 static int __init st7565_init(void)
-	{
+{
+	printk("initializiing st7565\n");
 	// allocate a buffer and zero it out
-		rx_buffer = kmalloc(BUFFER_SIZE,  GFP_KERNEL);
-		memset(rx_buffer, 0, BUFFER_SIZE);
+	rx_buffer = kmalloc(BUFFER_SIZE,  GFP_KERNEL);
+	memset(rx_buffer, 0, BUFFER_SIZE);
+	printk("registering st7565 chr dev\n");
+	// register a character device
+	if (alloc_chrdev_region(&first, 0, 1, "st7565") < 0)
+			{
+				return -1;
+			}
+			if ((cl = class_create(THIS_MODULE, "chardrv")
+	) == NULL)
+	{
+		unregister_chrdev_region(first, 1);
+		return -1;
+	}
+	printk("creating st7565 device\n");
+	if (device_create(cl, NULL, first, NULL, "st7565") == NULL)
+	{
+		class_destroy(cl);
+		unregister_chrdev_region(first, 1);
+		return -1;
+	}
+	printk("st7565 cdev init\n");
+	cdev_init(&c_dev, &pugs_fops);
+	if (cdev_add(&c_dev, first, 1) == -1)
+	{
+		device_destroy(cl, first);
+		class_destroy(cl);
+		unregister_chrdev_region(first, 1);
+		return -1;
+	}
 
-// register a character device
-if (alloc_chrdev_region(&first, 0, 1, "st7565") < 0)
-		{
-			return -1;
+	// request access to GPIO, set them all as outputs (initially low)
+	printk("registering st7565 gpio pins\n");
+	int err, i = 0;
+	for(i = 0; i < st7565_gpio_pin_info.num_pins; i++) {
+		err = gpio_request(st7565_gpio_pins[i].gpio, st7565_gpio_pins[i].name);
+		if(err) {
+			printk("Could not get access to GPIO %i, error code: %i\n", st7565_gpio_pins[i].gpio, err);
 		}
-		if ((cl = class_create(THIS_MODULE, "chardrv")
-) == NULL)
-{
-	unregister_chrdev_region(first, 1);
-	return -1;
-}
-if (device_create(cl, NULL, first, NULL, "st7565") == NULL)
-{
-	class_destroy(cl);
-	unregister_chrdev_region(first, 1);
-	return -1;
-}
-cdev_init(&c_dev, &pugs_fops);
-if (cdev_add(&c_dev, first, 1) == -1)
-{
-	device_destroy(cl, first);
-	class_destroy(cl);
-	unregister_chrdev_region(first, 1);
-	return -1;
-}
-
-// request access to GPIO, set them all as outputs (initially low)
-int err, i = 0;
-for(i = 0; i < st7565_gpio_pin_info.num_pins; i++) {
-	err = gpio_request(st7565_gpio_pins[i].gpio, st7565_gpio_pins[i].name);
-	if(err) {
-		printk("Could not get access to GPIO %i, error code: %i\n", st7565_gpio_pins[i].gpio, err);
+		err = gpio_direction_output(st7565_gpio_pins[i].gpio, 0);
+		if(err) {
+			printk("Could not set value of GPIO %i, error code: %i\n", st7565_gpio_pins[i].gpio, err);
+		}
 	}
-	err = gpio_direction_output(st7565_gpio_pins[i].gpio, 0);
-	if(err) {
-		printk("Could not set value of GPIO %i, error code: %i\n", st7565_gpio_pins[i].gpio, err);
-	}
-}
+	printk("initializiing st7565 lcd display\n");
+	// initialize display
+	st7565_init_lcd();
+	printk("running st7565 intro\n");
+	lcd_intro();
 
-// initialize display
-st7565_init_lcd();
+	lcd_ascii5x7_string(0,10,"not connected...");
+	// ready to go!
+	printk("st7565 registered!\n");
 
-lcd_intro();
-
-lcd_ascii5x7_string(0,10,"not connected...");
-// ready to go!
-printk("st7565 registered!\n");
-
-return 0;
+	return 0;
 }
 
 static void __exit st7565_exit(void)
@@ -755,5 +759,17 @@ gpio_set_value(ST7565_CS, 1);
 
 module_init(st7565_init);
 module_exit(st7565_exit);
+
+int init_module(void)
+{
+	printk("Hello World!\n");
+	return 0;
+}
+
+void cleanup_module(void)
+{
+	printk("Goodbye Cruel World!\n");
+}
+
 MODULE_LICENSE("GPL")
 ;
