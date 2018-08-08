@@ -38,8 +38,8 @@ hcsr04_RR.bin: hcsr04_RR.p
 	
 hcsr04: hcsr04.c
 	@echo ">> Compiling HC-SR04 binary"
-	$(CC) $(CFLAGS) -c -o hcsr04.o hcsr04.c -I../gpio/iofunc
-	$(CC) -lpthread -o hcsr04 hcsr04.o -lprussdrv -L. -L../gpio/iofunc -liofunc
+	$(CC) $(CFLAGS) -c -o hcsr04.o hcsr04.c -I../gpio
+	$(CC) -lpthread -o hcsr04 hcsr04.o -lprussdrv -L. -L../gpio -liofunc
 
 clean:
 	rm -rf hcsr04 hcsr04.o hcsr04_FL.bin hcsr04_FC.bin hcsr04_FR.bin hcsr04_RL.bin hcsr04_RR.bin
