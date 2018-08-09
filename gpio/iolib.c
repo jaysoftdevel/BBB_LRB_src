@@ -11,7 +11,7 @@
 #include <time.h>
 #include "iolib.h"
 
-#define IOLIB_DBG 1
+#define DEBUG 1
 
 const unsigned int ioregion_base[] = { GPIO0, GPIO1, GPIO2, GPIO3 };
 
@@ -47,7 +47,7 @@ int iolib_init(void) {
 	int i;
 
 	if (memh) {
-#ifdef IOLIB_DBG
+#ifdef DEBUG
 			printf("iolib_init: memory already mapped?\n");
 #endif
 		return (-1);
@@ -59,14 +59,14 @@ int iolib_init(void) {
 	port_bitmask[1] = (unsigned int*) p9_bitmask;
 
 	memh = open("/dev/mem", O_RDWR);
-//#ifdef IOLIB_DBG
+//#ifdef DEBUG
 		printf("status of memh open is %x\n", memh);
 //#endif
 	for (i = 0; i < 4; i++) {
 		gpio_addr[i] = mmap(0, GPIOX_LEN, PROT_READ | PROT_WRITE, MAP_SHARED,
 				memh, ioregion_base[i]);
 		if (gpio_addr[i] == MAP_FAILED) {
-//#ifdef IOLIB_DBG
+//#ifdef DEBUG
 				printf("iolib_init: gpio mmap failure!\n");
 //#endif
 			return (-1);
@@ -77,7 +77,7 @@ int iolib_init(void) {
 		ctrl_addr = mmap(0, CONTROL_LEN, PROT_READ | PROT_WRITE, MAP_SHARED,
 				ctrlh, CONTROL_MODULE);
 		if (ctrl_addr == MAP_FAILED) {
-//#ifdef IOLIB_DBG
+//#ifdef DEBUG
 				printf("iolib_init: control module mmap failure!\n");
 //#endif
 			return (-1);
@@ -112,21 +112,21 @@ int iolib_setdir(char port, char pin, char dir) {
 	if (bank[port][pin] < 0)
 		param_error = 4;
 	if (param_error) {
-#ifdef IOLIB_DBG
+#ifdef DEBUG
 			printf("iolib_setdir: parameter error! Num: %x\n", param_error);
 #endif
 		return (-1);
 	}
 
 	// set the bit in the OE register in the appropriate region
-#ifdef IOLIB_DBG
+#ifdef DEBUG
 		for (i = 0; i < 4; i++) {
 			printf("mmap region %d address is 0x%08x\n", i, gpio_addr[i]);
 		}
 		printf("iolib_setdir: bank is %d\n", bank[port - 8][pin - 1]);
 #endif
 	reg = (void*) gpio_addr[bank[port - 8][pin - 1]] + GPIO_OE;
-#ifdef IOLIB_DBG
+#ifdef DEBUG
 		printf("address: %x\n", reg);
 #endif
 	if (dir == DIR_OUT) {
@@ -134,7 +134,7 @@ int iolib_setdir(char port, char pin, char dir) {
 	} else if (dir == DIR_IN) {
 		*reg |= port_bitmask[port - 8][pin - 1];
 	}
-#ifdef IOLIB_DBG
+#ifdef DEBUG
 		printf("done setting pin\n");
 #endif
 	return (0);

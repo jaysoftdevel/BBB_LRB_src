@@ -10,8 +10,8 @@ libiofunc.a: ../gpio/iolib.c
 
 stepperR: stepperR.c
 	@echo ">> Compiling stepperR binary"
-	$(CC) $(CFLAGS) -c -o stepperR.o stepperR.c -I../gpio
-	$(CC) -o stepperR stepperR.o -L../gpio -liofunc
+	$(CC) $(CFLAGS) -c -g -o stepperR.o stepperR.c -I../gpio
+	$(CC) -g -o stepperR stepperR.o -L../gpio -liofunc
 
 clean:
 	rm -r stepperR.o stepperR

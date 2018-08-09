@@ -26,8 +26,8 @@ lib : $(lib)
 test: $(test)
 
 $(test) : $(test:%=%.c)
-	$(CC) $(CFLAGS) -c -o $@.o $@.c
-	$(CC) $@.o $(LIB_PATH:%=-L%) $(LIBRARIES:%=-l%) -o $@
+	$(CC) $(CFLAGS) -c -g -o $@.o $@.c
+	$(CC) -g $@.o $(LIB_PATH:%=-L%) $(LIBRARIES:%=-l%) -o $@
 
 clean :
 	rm -rf *.o libiofunc.a $(test) core *~
