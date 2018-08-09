@@ -36,7 +36,7 @@ const unsigned int p9_bitmask[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 << 30, 1
 		<< 15, 0, 1 << 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 << 20, 1 << 7, 0, 0, 0,
 		0 };
 
-static int memh = 0;
+int memh;
 static int ctrlh = 0;
 volatile unsigned int *gpio_addr[4] = { NULL, NULL, NULL, NULL };
 volatile unsigned int *ctrl_addr = NULL;
@@ -59,16 +59,16 @@ int iolib_init(void) {
 	port_bitmask[1] = (unsigned int*) p9_bitmask;
 
 	memh = open("/dev/mem", O_RDWR);
-#ifdef IOLIB_DBG
+//#ifdef IOLIB_DBG
 		printf("status of memh open is %x\n", memh);
-#endif
+//#endif
 	for (i = 0; i < 4; i++) {
 		gpio_addr[i] = mmap(0, GPIOX_LEN, PROT_READ | PROT_WRITE, MAP_SHARED,
 				memh, ioregion_base[i]);
 		if (gpio_addr[i] == MAP_FAILED) {
-#ifdef IOLIB_DBG
+//#ifdef IOLIB_DBG
 				printf("iolib_init: gpio mmap failure!\n");
-#endif
+//#endif
 			return (-1);
 		}
 
@@ -77,9 +77,9 @@ int iolib_init(void) {
 		ctrl_addr = mmap(0, CONTROL_LEN, PROT_READ | PROT_WRITE, MAP_SHARED,
 				ctrlh, CONTROL_MODULE);
 		if (ctrl_addr == MAP_FAILED) {
-#ifdef IOLIB_DBG
+//#ifdef IOLIB_DBG
 				printf("iolib_init: control module mmap failure!\n");
-#endif
+//#endif
 			return (-1);
 		}
 	}
@@ -97,6 +97,7 @@ int iolib_free(void) {
 }
 
 int iolib_setdir(char port, char pin, char dir) {
+	return 0;
 	int i;
 	int param_error = 0;
 	volatile unsigned int* reg;

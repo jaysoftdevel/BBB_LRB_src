@@ -15,6 +15,8 @@
 
 static struct tPos coilPos;
 
+#define DEBUG
+
 #ifdef TESTSTEPPER
 int main(void) {
 	int delay=DELAY;
@@ -154,26 +156,27 @@ int initStepperLGpio() {
 #ifdef DEBUG
 	printf("setting up pins\n");
 #endif
-	if (iolib_setdir(PORT_P8, COIL_PIN_NORTH, DIR_OUT)) {
-		printf("could not set pin %i on port %i with direction %i\n",
-				COIL_PIN_NORTH, PORT_P8, DIR_OUT);
-		return (-2);
-	}
-	if (iolib_setdir(PORT_P8, COIL_PIN_EAST, DIR_OUT)) {
-		printf("could not set pin %i on port %i with direction %i\n",
-				COIL_PIN_EAST, PORT_P8, DIR_OUT);
-		return (-2);
-	}
-	if (iolib_setdir(PORT_P8, COIL_PIN_SOUTH, DIR_OUT)) {
-		printf("could not set pin %i on port %i with direction %i\n",
-				COIL_PIN_SOUTH, PORT_P8, DIR_OUT);
-		return (-2);
-	}
-	if (iolib_setdir(PORT_P8, COIL_PIN_WEST, DIR_OUT)) {
-		printf("could not set pin %i on port %i with direction %i\n",
-				COIL_PIN_WEST, PORT_P8, DIR_OUT);
-		return (-2);
-	}
+	//if (iolib_setdir(PORT_P8, COIL_PIN_NORTH, DIR_OUT)) {
+		//printf("could not set pin %i on port %i with direction %i\n",
+				//COIL_PIN_NORTH, PORT_P8, DIR_OUT);
+		//return (-2);
+	//}
+	//if (iolib_setdir(PORT_P8, COIL_PIN_EAST, DIR_OUT)) {
+		//printf("could not set pin %i on port %i with direction %i\n",
+				//COIL_PIN_EAST, PORT_P8, DIR_OUT);
+		//return (-2);
+	//}
+	//if (iolib_setdir(PORT_P8, COIL_PIN_SOUTH, DIR_OUT)) {
+		//printf("could not set pin %i on port %i with direction %i\n",
+				//COIL_PIN_SOUTH, PORT_P8, DIR_OUT);
+		//return (-2);
+	//}
+	//if (iolib_setdir(PORT_P8, COIL_PIN_WEST, DIR_OUT)) {
+		//printf("could not set pin %i on port %i with direction %i\n",
+				//COIL_PIN_WEST, PORT_P8, DIR_OUT);
+		//return (-2);
+	//}
+	printf("setting pins\n");
 	pin_low(PORT_P8, COIL_PIN_NORTH);
 	pin_low(PORT_P8, COIL_PIN_EAST);
 	pin_low(PORT_P8, COIL_PIN_SOUTH);
