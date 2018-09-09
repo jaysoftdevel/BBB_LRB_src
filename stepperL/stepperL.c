@@ -121,6 +121,7 @@ int stepLNone(){
 	pin_low(PORT_P8, COIL_PIN_EAST);
 	pin_low(PORT_P8, COIL_PIN_SOUTH);
 	pin_low(PORT_P8, COIL_PIN_WEST);
+	return 0;
 }
 /**
  *
@@ -156,27 +157,32 @@ int initStepperLGpio() {
 #ifdef DEBUG
 	printf("setting up pins\n");
 #endif
-	//if (iolib_setdir(PORT_P8, COIL_PIN_NORTH, DIR_OUT)) {
-		//printf("could not set pin %i on port %i with direction %i\n",
-				//COIL_PIN_NORTH, PORT_P8, DIR_OUT);
-		//return (-2);
-	//}
-	//if (iolib_setdir(PORT_P8, COIL_PIN_EAST, DIR_OUT)) {
-		//printf("could not set pin %i on port %i with direction %i\n",
-				//COIL_PIN_EAST, PORT_P8, DIR_OUT);
-		//return (-2);
-	//}
-	//if (iolib_setdir(PORT_P8, COIL_PIN_SOUTH, DIR_OUT)) {
-		//printf("could not set pin %i on port %i with direction %i\n",
-				//COIL_PIN_SOUTH, PORT_P8, DIR_OUT);
-		//return (-2);
-	//}
-	//if (iolib_setdir(PORT_P8, COIL_PIN_WEST, DIR_OUT)) {
-		//printf("could not set pin %i on port %i with direction %i\n",
-				//COIL_PIN_WEST, PORT_P8, DIR_OUT);
-		//return (-2);
-	//}
+	if (iolib_setdir(PORT_P8, COIL_PIN_NORTH, DIR_OUT)) {
+		printf("could not set pin %i on port %i with direction %i\n",
+				COIL_PIN_NORTH, PORT_P8, DIR_OUT);
+		return (-2);
+	}
+	if (iolib_setdir(PORT_P8, COIL_PIN_EAST, DIR_OUT)) {
+		printf("could not set pin %i on port %i with direction %i\n",
+				COIL_PIN_EAST, PORT_P8, DIR_OUT);
+		return (-2);
+	}
+	if (iolib_setdir(PORT_P8, COIL_PIN_SOUTH, DIR_OUT)) {
+		printf("could not set pin %i on port %i with direction %i\n",
+				COIL_PIN_SOUTH, PORT_P8, DIR_OUT);
+		return (-2);
+	}
+	if (iolib_setdir(PORT_P8, COIL_PIN_WEST, DIR_OUT)) {
+		printf("could not set pin %i on port %i with direction %i\n",
+				COIL_PIN_WEST, PORT_P8, DIR_OUT);
+		return (-2);
+	}
 	printf("setting pins\n");
+	gpio_set_value(GPIO_TO_PIN(0, COIL_PIN_WEST) , 0);
+	gpio_set_value(GPIO_TO_PIN(2, COIL_PIN_SOUTH) , 0);
+	gpio_set_value(GPIO_TO_PIN(0, COIL_PIN_EAST) , 0);
+	gpio_set_value(GPIO_TO_PIN(2, COIL_PIN_NORTH) , 0);
+	printf("next try...");
 	pin_low(PORT_P8, COIL_PIN_NORTH);
 	pin_low(PORT_P8, COIL_PIN_EAST);
 	pin_low(PORT_P8, COIL_PIN_SOUTH);

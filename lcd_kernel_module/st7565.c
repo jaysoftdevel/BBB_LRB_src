@@ -397,7 +397,7 @@ void st7565_deinit(void) {
 	gpio_set_value(ST7565_RST, 0);
 	}
 
-	void st7565_init_lcd(void) {
+void st7565_init_lcd(void) {
 	printk("[%s] configuring st7565\n",__FUNCTION__);
 	gpio_set_value(ST7565_CS, 0);
 	/**/
