@@ -13,23 +13,23 @@ all: hcsr04_FL.bin hcsr04_FC.bin hcsr04_FR.bin hcsr04_RL.bin hcsr04_RR.bin hcsr0
 
 hcsr04_FL.bin: hcsr04_FL.p
 	@echo ">> Generating PRU binary FL"
-	$(IPASM_PATH)/$(PRU_ASM) -b hcsr04_FL.p
+	$(IPASM_PATH)$(PRU_ASM) -b hcsr04_FL.p
 
 hcsr04_FC.bin: hcsr04_FC.p
 	@echo ">> Generating PRU binary FC"
-	$(IPASM_PATH)/$(PRU_ASM) -b hcsr04_FC.p
+	$(IPASM_PATH)$(PRU_ASM) -b hcsr04_FC.p
 	
 hcsr04_FR.bin: hcsr04_FR.p
 	@echo ">> Generating PRU binary FR"
-	$(IPASM_PATH)/$(PRU_ASM) -b hcsr04_FR.p
+	$(IPASM_PATH)$(PRU_ASM) -b hcsr04_FR.p
 	
 hcsr04_RL.bin: hcsr04_RL.p
 	@echo ">> Generating PRU binary RL"
-	$(IPASM_PATH)/$(PRU_ASM) -b hcsr04_RL.p
+	$(IPASM_PATH)$(PRU_ASM) -b hcsr04_RL.p
 	
 hcsr04_RR.bin: hcsr04_RR.p
 	@echo ">> Generating PRU binary RR"
-	$(IPASM_PATH)/$(PRU_ASM) -b hcsr04_RR.p
+	$(IPASM_PATH)$(PRU_ASM) -b hcsr04_RR.p
 
 #libiofunc.a: ../GPIO/iofunc/iolib.c
 #	@echo ">> Creating GPIO lib"
