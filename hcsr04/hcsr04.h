@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <linux/gpio.h>
 
 #include "prussdrv.h"
 #include "pruss_intc_mapping.h"
@@ -15,7 +16,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
-#include "iolib.h"
+//#include "iolib.h"
 
 #ifndef HCSR04_H_
 #define HCSR04_H_
