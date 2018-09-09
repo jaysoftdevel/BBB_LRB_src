@@ -14,8 +14,12 @@
 #include <sys/mman.h>
 
 #include "iolib.h"
+#include <linux/gpio.h>
 
 #define CYCLES 100000
+
+// macro to convert bank and gpio into pin number
+#define GPIO_TO_PIN(bank, gpio) (32 * (bank) + (gpio))
 
 // default DIOs
 #define PORT_P8 8

@@ -3,6 +3,7 @@
 	<name>stepperL</name>
 	<comment></comment>
 	<projects>
+		<project>gpio</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
