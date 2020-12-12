@@ -4,6 +4,11 @@ static void *pruDataMem;
 static volatile unsigned int *pruData;
 
 #ifdef TESTHCSR04
+
+# Minor temporary fix...
+#define DIR_IN 0
+#define DIR_OUT 1
+
 int main(void) {
 //	initPru1();
 #ifdef DEBUG
