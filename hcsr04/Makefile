@@ -7,9 +7,9 @@ IPASM_PATH=$(PASM_PATH)# import from rootbot-hcsr04 recipe
 
 all: hcsr04_FL.bin hcsr04_FC.bin hcsr04_FR.bin hcsr04_RL.bin hcsr04_RR.bin hcsr04
 
-#hcsr04-00A0.dtbo: hcsr04.dts
-#	@echo ">> Compiling Driver"
-#	$(DTC) -O dtb -o hcsr04-00A0.dtbo -b 0 -@ hcsr04.dts
+hcsr04-00A0.dtbo: hcsr04.dts
+	@echo ">> Compiling Driver"
+	$(DTC) -O dtb -o hcsr04-00A0.dtbo -b 0 -@ hcsr04.dts
 
 hcsr04_FL.bin: hcsr04_FL.p
 	@echo ">> Generating PRU binary FL"
@@ -31,15 +31,14 @@ hcsr04_RR.bin: hcsr04_RR.p
 	@echo ">> Generating PRU binary RR"
 	$(IPASM_PATH)$(PRU_ASM) -b hcsr04_RR.p
 
-#libiofunc.a: ../GPIO/iofunc/iolib.c
-#	@echo ">> Creating GPIO lib"
-#	make -C ../GPIO/iofunc/ clean
-#	make -C ../GPIO/iofunc/ lib
+libiofunc.a: ../GPIO/iofunc/iolib.c
+	@echo ">> Creating GPIO lib"
+	make -C ../GPIO/iofunc/ clean
+	make -C ../GPIO/iofunc/ lib
 	
 hcsr04: hcsr04.c
 	@echo ">> Compiling HC-SR04 binary"
-	$(CC) $(CFLAGS) -c -o hcsr04.o hcsr04.c -I../gpio
-	$(CC) -lpthread -o hcsr04 hcsr04.o -lprussdrv -L. -L../gpio -liofunc
+	$(CC) $(CFLAGS) hcsr04.c prussdrv.c -o hcsr04 -I../gpio -I. -L. -L../gpio -liofunc
 
 clean:
 	rm -rf hcsr04 hcsr04.o hcsr04_FL.bin hcsr04_FC.bin hcsr04_FR.bin hcsr04_RL.bin hcsr04_RR.bin

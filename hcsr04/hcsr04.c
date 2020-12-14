@@ -7,6 +7,7 @@ static volatile unsigned int *pruData;
 
 #define DIR_IN 0
 #define DIR_OUT 1
+#define DEBUG
 
 int main(void) {
 //	initPru1();
@@ -30,7 +31,10 @@ int main(void) {
 
 	printf("initializing pins...\n");
 	initHcsr04Gpio();
-	initPru1();
+	if(initPru1()){
+		fprintf(stderr, ">> PRU initialization failed...\n");
+		return -1;
+	};
 	for (i; i > 0; i--) {
 		gettimeofday(&start,0);
 		dist[0]=getDistancePRU1("hcsr04_FL.bin",PRU_FL_OFFSET);
@@ -166,18 +170,25 @@ int initHcsr04Gpio(){
 }
 
 int initPru1() {
+	int ret=0;
 #ifdef DEBUG
 	printf("PRU INIT: enter init routine\n");
 #endif
 	tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
-	prussdrv_init();
+	ret = prussdrv_init();
+	if(ret!=0){
+		// init failure
+		fprintf(stderr, ">> PRU driver initialization failed with value: %i and errno %i\n",ret, errno);
+		return 1;
+	}
 #ifdef DEBUG
-	printf("PRU INIT: open driver\n");
+	printf("PRU INIT: open driver, errnor is currently at: %i\n",errno);
 #endif
 	/* Open PRU Interrupt */
-	if (prussdrv_open(PRU_EVTOUT_1)) {
+	ret=prussdrv_open(PRU_EVTOUT_1);
+	if (ret!=0) {
 		// Handle failure
-		fprintf(stderr, ">> PRU open failed:\n");
+		fprintf(stderr, ">> PRU open failed with value: %i and errno %i\n",ret, errno);
 		return 1;
 	}
 #ifdef DEBUG
