@@ -15,13 +15,14 @@
 #include <time.h>
 #include <fcntl.h>
 #include <sys/mman.h>
+#include <errno.h>
 
 //#include "iolib.h"
 
 #ifndef HCSR04_H_
 #define HCSR04_H_
 
-//#define DEBUG
+#define DEBUG
 #define IOLIB_DBG
 #define CYCLES 500
 #define DIST_PER_NSEC 58.440

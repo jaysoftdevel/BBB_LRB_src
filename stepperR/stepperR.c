@@ -121,6 +121,7 @@ int stepRNone(){
 	pin_low(PORT_P8, COIL_PIN_EAST);
 	pin_low(PORT_P8, COIL_PIN_SOUTH);
 	pin_low(PORT_P8, COIL_PIN_WEST);
+	return (0);
 }
 /**
  *
