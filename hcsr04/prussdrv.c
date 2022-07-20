@@ -258,17 +258,23 @@ int prussdrv_init(void)
 int prussdrv_open(unsigned int host_interrupt)
 {
     char name[PRUSS_UIO_PRAM_PATH_LEN];
+    printf("Opening prussdr with IR: %i\n", host_interrupt);
     if (!prussdrv.fd[host_interrupt]) {
         sprintf(name, "/dev/uio%d", host_interrupt);
+        printf("prussdrv.fd[host_interrupt] is: %x\n",prussdrv.fd[host_interrupt]);
+        printf("### 2DO: fix access to /dev/uio with value: \n", host_interrupt);
         prussdrv.fd[host_interrupt] = open(name, O_RDWR | O_SYNC);
         if (prussdrv.fd[host_interrupt] == -1) {
+            printf("### here we are with an error...\n");
             return -1;
         }
+        printf("Opening host_interrupt returned file descriptor: \n",prussdrv.fd[host_interrupt]);
         return __prussdrv_memmap_init();
     } else {
+        printf("### this is the else error...#\n");
         return -1;
-
     }
+    printf("### we miss the positive return.. #\n");
 }
 
 int prussdrv_version() {

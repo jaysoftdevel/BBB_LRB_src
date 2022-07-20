@@ -177,14 +177,14 @@ int initPru1() {
 #endif
 	tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
 	ret = prussdrv_init();
-	printf("prussdrv_init done");
+	printf("prussdrv_init done\n");
 	if(ret!=0){
 		// init failure
 		fprintf(stderr, ">> PRU driver initialization failed with value: %i and errno %i\n",ret, errno);
 		return 1;
 	}
 #ifdef DEBUG
-	printf("PRU INIT: open driver, errnor is currently at: %i\n",errno);
+	printf("PRU INIT: open driver, errnor returned: %i\n",errno);
 #endif
 	/* Open PRU Interrupt */
 	ret=prussdrv_open(PRU_EVTOUT_1);
