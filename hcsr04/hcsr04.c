@@ -173,10 +173,11 @@ int initHcsr04Gpio(){
 int initPru1() {
 	int ret=0;
 #ifdef DEBUG
-	printf("PRU INIT: enter init routine\n");
+	printf("PRU INIT: enter init routine %s\n", __FUNCTION__);
 #endif
 	tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
 	ret = prussdrv_init();
+	printf("prussdrv_init done");
 	if(ret!=0){
 		// init failure
 		fprintf(stderr, ">> PRU driver initialization failed with value: %i and errno %i\n",ret, errno);

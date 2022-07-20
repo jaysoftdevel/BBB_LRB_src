@@ -248,7 +248,9 @@ int __prussdrv_memmap_init(void)
 
 int prussdrv_init(void)
 {
-    memset(&prussdrv, 0, sizeof(prussdrv));
+    printf("Init prussdrv: %x with size: %i\n",&prussdrv, sizeof(prussdrv));
+    void* ret = memset(&prussdrv, 0, sizeof(prussdrv));
+    printf("%s function returned: %x\n", __FUNCTION__, ret);
     return 0;
 
 }
