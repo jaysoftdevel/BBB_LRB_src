@@ -90,10 +90,12 @@ int iolib_init(void) {
 	int memValueGPIO1 = clock_gpio[(offsetInMemory_GPIO1/4)];
 	int memValueGPIO2 = clock_gpio[(offsetInMemory_GPIO2/4)];
 	int memValueGPIO3 = clock_gpio[(offsetInMemory_GPIO3/4)];
+#ifdef DEBUG
 	// print it – it will probably be 0x030000 if the clock has never been enabled
 	printf("GPIO1 clock value = %04x\n", memValueGPIO1);
 	printf("GPIO2 clock value = %04x\n", memValueGPIO2);
 	printf("GPIO3 clock value = %04x\n", memValueGPIO3);
+#endif
 	// now set it, this enables the memory
 	printf("Setting GPIO1 clock\n");
 	clock_gpio[(offsetInMemory_GPIO1/4)] = 0x02;
