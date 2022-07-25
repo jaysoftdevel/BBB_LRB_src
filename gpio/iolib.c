@@ -59,29 +59,61 @@ int iolib_init(void) {
 	port_bitmask[1] = (unsigned int*) p9_bitmask;
 
 	memh = open("/dev/mem", O_RDWR);
-//#ifdef DEBUG
-		printf("status of memh open is %x\n", memh);
-//#endif
+#ifdef DEBUG
+	printf("status of memh open is %x\n", memh);
+#endif
 	for (i = 0; i < 4; i++) {
-		gpio_addr[i] = mmap(0, GPIOX_LEN, PROT_READ | PROT_WRITE, MAP_SHARED,
-				memh, ioregion_base[i]);
+		gpio_addr[i] = mmap(0, GPIOX_LEN, PROT_READ | PROT_WRITE, MAP_SHARED, memh, ioregion_base[i]);
 		if (gpio_addr[i] == MAP_FAILED) {
-//#ifdef DEBUG
-				printf("iolib_init: gpio mmap failure!\n");
-//#endif
+#ifdef DEBUG
+			printf("iolib_init: gpio mmap failure!\n");
+#endif
 			return (-1);
 		}
-
+#ifdef DEBUG
+		else{
+			printf("gpio[%i] = %x\n",i,gpio_addr[i]);
+		}
+#endif
 	}
+
+#ifdef DEBUG
+	printf("Enable all GPIO clocks!!\n");
+#endif
+	uint32_t *clock_gpio1;
+	uint32_t *clock_gpio2;
+	uint32_t *clock_gpio3;
+	clock_gpio2 = (uint32_t *) mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0x44E00000);
+	// 0xb0 is CM_PER_GPIO2_CLKCTRL as given in the TRM, use 0xb4 for GPIO_3 (see the TRM)
+	int offsetInMemory_GPIO1 = 0xac;
+	int offsetInMemory_GPIO2 = 0xb0;
+	int offsetInMemory_GPIO3 = 0xb4;
+	// get the value, we divide by 4 because it is a byte offset
+	int memValueGPIO1 = clock_gpio1[(offsetInMemory_GPIO1/4)];
+	int memValueGPIO2 = clock_gpio2[(offsetInMemory_GPIO2/4)];
+	int memValueGPIO3 = clock_gpio3[(offsetInMemory_GPIO3/4)];
+	// print it – it will probably be 0x030000 if the clock has never been enabled
+	printf("GPIO1 clock value = %04x\n", memValueGPIO1);
+	printf("GPIO2 clock value = %04x\n", memValueGPIO2);
+	printf("GPIO3 clock value = %04x\n", memValueGPIO3);
+	// now set it, this enables the memory
+	clock_gpio1[(offsetInMemory_GPIO1/4)] = 0x02;
+	clock_gpio2[(offsetInMemory_GPIO2/4)] = 0x02;
+	clock_gpio3[(offsetInMemory_GPIO3/4)] = 0x02;
+	
 	if (PINMUX_EN) {
-		ctrl_addr = mmap(0, CONTROL_LEN, PROT_READ | PROT_WRITE, MAP_SHARED,
-				ctrlh, CONTROL_MODULE);
+		ctrl_addr = mmap(0, CONTROL_LEN, PROT_READ | PROT_WRITE, MAP_SHARED, ctrlh, CONTROL_MODULE);
 		if (ctrl_addr == MAP_FAILED) {
-//#ifdef DEBUG
+#ifdef DEBUG
 				printf("iolib_init: control module mmap failure!\n");
-//#endif
+#endif
 			return (-1);
 		}
+#ifdef DEBUG
+		else{
+			printf("ctrl_addr = %x\n",ctrl_addr);
+		}
+#endif
 	}
 	return (0);
 }
@@ -97,21 +129,26 @@ int iolib_free(void) {
 }
 
 int iolib_setdir(char port, char pin, char dir) {
-	return 0;
+	//return 0;
 	int i;
 	int param_error = 0;
 	volatile unsigned int* reg;
 
+	printf("### iolib_setdir called with port: %x, pin: %x, dir: %x\n",port, pin, dir);
 	// sanity checks
-	if (memh == 0)
+	if (memh == 0){
 		param_error = 1;
-	if ((port < 8) || (port >> 9))
+	}
+	if ((port<8) || (port>>9)){
 		param_error = 2;
-	if ((pin < 1) || (pin > 46))
+	}
+	if ((pin < 1) || (pin > 46)){
 		param_error = 3;
-	if (bank[port][pin] < 0)
+	}
+	if (bank[port][pin] < 0){
 		param_error = 4;
-	if (param_error) {
+	}
+	if (param_error != 0) {
 #ifdef DEBUG
 			printf("iolib_setdir: parameter error! Num: %x\n", param_error);
 #endif

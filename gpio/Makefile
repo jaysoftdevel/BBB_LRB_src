@@ -9,7 +9,7 @@
 lib = libiofunc.a
 test = test_app
 
-LIB_PATH = .    
+LIB_PATH = .
 LIBRARIES = iofunc
 INCLUDES = -I. ${LIB_PATH}
 
@@ -17,7 +17,7 @@ SOURCES =  iolib.c
 OBJECTS = $(SOURCES:%.c=%.o) 
 
 EXTRA_DEFINE = 
-CCCFLAGS = $(EXTRA_DEFINE) 
+CPPFLAGS = $(EXTRA_DEFINE) 
 #CC = arm-linux-gnueabi-gcc
 CFLAGS = $(EXTRA_DEFINE)
 
