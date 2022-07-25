@@ -72,35 +72,36 @@ int iolib_init(void) {
 		}
 #ifdef DEBUG
 		else{
-			printf("gpio[%i] = %x\n",i,gpio_addr[i]);
+			printf("gpio[%i] = %x\n",i,(unsigned int)gpio_addr[i]);
 		}
 #endif
 	}
 
 #ifdef DEBUG
-	printf("Enable all GPIO clocks!!\n");
+	printf("Enable all GPIO clocks\n");
 #endif
-	uint32_t *clock_gpio1;
-	uint32_t *clock_gpio2;
-	uint32_t *clock_gpio3;
-	clock_gpio2 = (uint32_t *) mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0x44E00000);
+	unsigned int *clock_gpio;
+	clock_gpio = (unsigned int *) mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_SHARED, memh, 0x44E00000);
 	// 0xb0 is CM_PER_GPIO2_CLKCTRL as given in the TRM, use 0xb4 for GPIO_3 (see the TRM)
 	int offsetInMemory_GPIO1 = 0xac;
 	int offsetInMemory_GPIO2 = 0xb0;
 	int offsetInMemory_GPIO3 = 0xb4;
 	// get the value, we divide by 4 because it is a byte offset
-	int memValueGPIO1 = clock_gpio1[(offsetInMemory_GPIO1/4)];
-	int memValueGPIO2 = clock_gpio2[(offsetInMemory_GPIO2/4)];
-	int memValueGPIO3 = clock_gpio3[(offsetInMemory_GPIO3/4)];
+	int memValueGPIO1 = clock_gpio[(offsetInMemory_GPIO1/4)];
+	int memValueGPIO2 = clock_gpio[(offsetInMemory_GPIO2/4)];
+	int memValueGPIO3 = clock_gpio[(offsetInMemory_GPIO3/4)];
 	// print it – it will probably be 0x030000 if the clock has never been enabled
 	printf("GPIO1 clock value = %04x\n", memValueGPIO1);
 	printf("GPIO2 clock value = %04x\n", memValueGPIO2);
 	printf("GPIO3 clock value = %04x\n", memValueGPIO3);
 	// now set it, this enables the memory
-	clock_gpio1[(offsetInMemory_GPIO1/4)] = 0x02;
-	clock_gpio2[(offsetInMemory_GPIO2/4)] = 0x02;
-	clock_gpio3[(offsetInMemory_GPIO3/4)] = 0x02;
-	
+	printf("Setting GPIO1 clock\n");
+	clock_gpio[(offsetInMemory_GPIO1/4)] = 0x02;
+	printf("Setting GPIO2 clock\n");
+	clock_gpio[(offsetInMemory_GPIO2/4)] = 0x02;
+	printf("Setting GPIO3 clock\n");
+	clock_gpio[(offsetInMemory_GPIO3/4)] = 0x02;
+	printf("setting clocks done");
 	if (PINMUX_EN) {
 		ctrl_addr = mmap(0, CONTROL_LEN, PROT_READ | PROT_WRITE, MAP_SHARED, ctrlh, CONTROL_MODULE);
 		if (ctrl_addr == MAP_FAILED) {
