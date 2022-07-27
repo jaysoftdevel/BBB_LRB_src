@@ -33,9 +33,9 @@ typedef struct tPos{
 	uint8 pos :2;
 }tPos;
 
-int stepRNone(void);
-int stepFwdLR(void);
-int stepRevR(void);
+int stepLNone(void);
+int stepFwdL(void);
+int stepRevL(void);
 
 //Do not add code below this line
 #endif /* STEPPERMOTOR_CONTROL_L_H */
